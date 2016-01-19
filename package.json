@@ -1,42 +1,28 @@
 {
   "name": "fiware-object-storage",
-  "version": "0.2.0",
-  "description": "Connect to FIWARE Object Storage GE from NodeJS",
+  "version": "1.0.0",
+  "description": "FIWARE Object Storage GE API",
   "main": "lib/index.js",
   "keywords": [
     "FIWARE",
     "Object",
     "Storage"
+    "Object Storage"
   ],
   "scripts": {
     "test": "DEBUG=fiware-object-storage nodemon test.js"
   },
-  "author": "Arvid Kahl <mail@arvidkahl.de> (http://www.arvidkahl.de)",
+  "author": "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)",
   "maintainers": [
-    "Arvid Kahl <mail@arvidkahl.de> (http://www.arvidkahl.de)"
+    "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)"
   ],
-  "homepage": "https://github.com/arvidkahl/fiware-object-storage",
+  "homepage": "https://github.com/renarsvilnis/fiware-object-storage",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arvidkahl/fiware-object-storage.git"
-  },
-  "bugs": {
-    "url": "https://github.com/arvidkahl/fiware-object-storage/issues"
-  },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/arvidkahl/fiware-object-storage/blob/master/LICENSE-MIT"
-  },
-  "engines": {
-    "node": ">= 0.10.0"
+    "url": "https://github.com/renarsvilnis/fiware-object-storage.git"
   },
   "dependencies": {
-    "atob": "^1.1.2",
-    "btoa": "^1.1.2",
     "debug": "^2.2.0",
-    "needle": "^0.9.2",
-    "q": "^1.2.0",
-    "qs": "^2.4.1",
     "superagent": "^1.6.1"
   },
   "devDependencies": {

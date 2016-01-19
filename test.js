@@ -13,10 +13,9 @@ const config = {
   auth: 'cloud.lab.fiware.org:4730',
   // Whatever container you want to connect to
   container: process.env.CONTAINER,
-  // Your FIWARE account email
-  username: process.env.EMAIL,
-  // Your FIWARE account password.. i know.. no comment.
-  password: process.env.PASSWORD
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  region: 'Spain2'
 };
 
 const objectStorage = new ObjectStorage(config);
