@@ -90,11 +90,9 @@ Returns a promise.
 Returns Object of Files
 
 ### deleteContainer(containerName)
+
 ### putFile()
 Uploads file into the container. `name` will be the filename inside the container, `data` must be the file data in base64 encoding. `meta` can be any additional data, will be stringified.
-
-
-
 
 ### getFile()
 Downloads the file called `name` from the container and returns:
@@ -109,8 +107,30 @@ Downloads the file called `name` from the container and returns:
 
 ### deleteFile()
 
+## Testing
+Although there aren't any unit tests written, it is possible to do a system test for testing out the functionality of the module as following:
+
+```bash
+# clone the repo
+cd path/to/clone/in
+git clone https://github.com/renarsvilnis/fiware-object-storage.git
+
+# install the dependencies
+cd fiware-object-storage
+npm install
+
+# Run the test - for it to work you need to supply the test with the below
+# listed config entries
+CONTAINER=<your-container-name> USER=<fiware-account-email> PASSWORD=<fiware-account-password> REGION=<object-storage-region> npm run test
+# when developing it might be usefull to nodemon on top that reruns the test
+# file on each file modification
+CONTAINER=... npm run test:nodemon
+```
+
 ## Contributing
+
 Feel free to fork or add issues/pull-requests if something changes in the API schema or authentification process.
 
 ## License
+
 License under MIT.
