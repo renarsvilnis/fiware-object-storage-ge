@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "DEBUG=fiware-object-storage node test.js",
-    "test:nodemon": "DEBUG=fiware-object-storage nodemon test.js"
+    "test:nodemon": "DEBUG=fiware-object-storage* nodemon test.js"
   },
   "author": "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)",
   "maintainers": [

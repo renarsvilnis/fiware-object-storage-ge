@@ -12,8 +12,6 @@ npm install --save fiware-object-storage
 
 ## Usage
 
-Include the `fiware-object-storage` module and initialize it with a configuration object:
-
 ```javascript
 'use script';
 
@@ -40,10 +38,10 @@ const config = {
 // so that authentication happens only once
 const fiwareObjectStorage = FiwareObjectStorage(config);
 
-// Initiate the instance by fetching the authentification tokens and
-// tenants.
+// Initiate the instance by fetching the authentification tokens and tenants.
 // Recommended to do it on the launch of the server.
 fiwareObjectStorage.initiate()
+    // then fetch all files from the container and output them with console.log
     .then(() => fiwareObjectStorage.listContainer())
     .then((items) => console.log(items))
     // errors are returned as a Error class instance
@@ -60,6 +58,18 @@ DEBUG=* node server.js
 ```
 
 ## Methods
+
+> All methods that return a promise will throw an `Error` instance in the standard promise way.
+
+```javascript
+fiwareObjectStorage.initiate()
+    .then(() => {
+        // authenticated succesfully
+    })
+    .catch((err) => {
+        console.err(err);
+    });
+```
 
 ### initiate()
 TODO
