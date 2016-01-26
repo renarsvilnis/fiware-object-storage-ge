@@ -1,5 +1,5 @@
 {
-  "name": "fiware-object-storage",
+  "name": "fiware-object-storage-ge",
   "version": "1.0.0",
   "description": "FIWARE Object Storage GE API",
   "main": "lib/index.js",
@@ -10,20 +10,21 @@
     "Object Storage"
   ],
   "scripts": {
-    "test": "DEBUG=fiware-object-storage node test.js",
-    "test:nodemon": "DEBUG=fiware-object-storage* nodemon test.js"
+    "test": "DEBUG=fiware-object-storage-ge node test.js",
+    "test:nodemon": "DEBUG=fiware-object-storage-ge* nodemon --ignore 'tests/*.json' ./tests/index.js"
   },
   "author": "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)",
   "maintainers": [
     "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)"
   ],
-  "homepage": "https://github.com/renarsvilnis/fiware-object-storage",
+  "homepage": "https://github.com/renarsvilnis/fiware-object-storage-ge",
   "repository": {
     "type": "git",
-    "url": "https://github.com/renarsvilnis/fiware-object-storage.git"
+    "url": "https://github.com/renarsvilnis/fiware-object-storage-ge.git"
   },
   "dependencies": {
     "debug": "^2.2.0",
+    "mime": "1.3.4",
     "superagent": "^1.6.1"
   },
   "devDependencies": {

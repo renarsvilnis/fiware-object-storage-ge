@@ -1,4 +1,4 @@
-# fiware-object-storage
+# fiware-object-storage-ge
 
 > A promise based Node.js module for read/write access to the FIWARE Object Storage GE
 
@@ -7,7 +7,7 @@ Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidk
 ## Installation
 
 ``` bash
-npm install --save fiware-object-storage
+npm install --save fiware-object-storage-ge
 ```
 
 ## Usage
@@ -15,18 +15,20 @@ npm install --save fiware-object-storage
 ```javascript
 'use script';
 
-const FiwareObjectStorage = require('fiware-object-storage');
+const fiwareObjectStorage = require('fiware-object-storage-ge');
 
 const config = {
-  // IP of the Auth Services, likely "cloud.lab.fi-ware.org"
-  auth: 'FIWARE_AUTH_URL'
+  // IP of the Auth Services, no need to pass it explicitly 99%
+  // By defaults "cloud.lab.fi-ware.org"
+  auth: 'cloud.lab.fi-ware.org'
   // Default container you want to work with, as convenience
-  container: 'some-container',           
+  container: 'my-container',           
   // Your FIWARE account email
   user: 'john.rambo@usa.gov',
   // Your FIWARE account password
   password: 'Yourw0rstn1ghtmare',
-  // TODO
+  // The region where the storage instace is located in
+  // By default "Spain2"
   region: 'Spain2',
   // TODO
   tenant: '<string>'
@@ -36,13 +38,13 @@ const config = {
 // It allows to have multiple instances.
 // Recommended to create a singleton module that exports the instance,
 // so that authentication happens only once
-const fiwareObjectStorage = FiwareObjectStorage(config);
+const storage = fiwareObjectStorage(config);
 
 // Initiate the instance by fetching the authentification tokens and tenants.
 // Recommended to do it on the launch of the server.
-fiwareObjectStorage.initiate()
+storage.initiate()
     // then fetch all files from the container and output them with console.log
-    .then(() => fiwareObjectStorage.listContainer())
+    .then(() => storage.listContainer())
     .then((items) => console.log(items))
     // errors are returned as a Error class instance
     .catch(console.error);
@@ -51,8 +53,8 @@ fiwareObjectStorage.initiate()
 This module uses [debug](https://www.npmjs.com/package/debug) for debugging, if you wan't to see what the module is doing under the hood in a case where something isn't working, pass an `DEBUG` enviromental variable when launching your server as following:
 
 ```bash
-# Debug just the fiware-object-storage
-DEBUG=fiware-object-storage node server.js
+# Debug just the fiware-object-storage-ge
+DEBUG=fiware-object-storage-ge node server.js
 # Debug everything, for a more detailed explanation reference the debug repository
 DEBUG=* node server.js
 ```
@@ -62,7 +64,7 @@ DEBUG=* node server.js
 > All methods that return a promise will throw an `Error` instance in the standard promise way.
 
 ```javascript
-fiwareObjectStorage.initiate()
+storage.initiate()
     .then(() => {
         // authenticated succesfully
     })
@@ -72,12 +74,11 @@ fiwareObjectStorage.initiate()
 ```
 
 ### initiate()
-TODO
-~~Connects to the URLs declared in the config. Then calls the `callback` function~~
+TODO: documentation
 
-If runned again, the function will just refresh the authentication token. Can be used as a "reconnect" (reauthentification) mechanism.
+> If runned again, the function will just refresh the authentication token. Can be used as a "reconnect" (reauthentification) mechanism.
 
-Returns a Promise instance.
+>Currently there isn't a automatic token fetch for reauthentification when expired.
 
 ### setActiveContainer(containerName)
 - `containerName` String
@@ -87,35 +88,32 @@ Helper functions that sets the active container to passed in `containerName`. Th
 Returns undefined.
 
 ### lookupTenant()
-Helper function for identifying the tenant for the region
+Helper function for identifying the tenant for the region.
+
+TODO: documentation
+
+> As tenants are static per Object Storage instance, once you query the tenant ID you can pass it to the config to reduce initiate time. **NOT IMPLEMENTED YET**
+
+### getContainerList()
+TODO: documentation
 
 ### createContainer(containerName)
-- `containerName` String
-
-Create a new container with the name passed in by `containerName`
-
-Returns a promise.
+TODO: documentation
 
 ### listContainer(containerName)
-Returns Object of Files
+TODO: documenation
 
 ### deleteContainer(containerName)
+TODO: documenation
 
 ### putFile()
-Uploads file into the container. `name` will be the filename inside the container, `data` must be the file data in base64 encoding. `meta` can be any additional data, will be stringified.
+TODO: documenation
 
 ### getFile()
-Downloads the file called `name` from the container and returns:
-
-```js 
-{
-  meta : String
-  mimetype: String
-  value : base64-encoded data
-}
-```
+TODO: documenation
 
 ### deleteFile()
+TODO: documenation
 
 ## Testing
 Although there aren't any unit tests written, it is possible to do a system test for testing out the functionality of the module as following:
@@ -123,10 +121,10 @@ Although there aren't any unit tests written, it is possible to do a system test
 ```bash
 # clone the repo
 cd path/to/clone/in
-git clone https://github.com/renarsvilnis/fiware-object-storage.git
+git clone https://github.com/renarsvilnis/fiware-object-storage-ge.git
 
 # install the dependencies
-cd fiware-object-storage
+cd fiware-object-storage-ge
 npm install
 
 # Run the test - for it to work you need to supply the test with the below
@@ -140,6 +138,11 @@ CONTAINER=... npm run test:nodemon
 ## Contributing
 
 Feel free to fork or add issues/pull-requests if something changes in the API schema or authentification process.
+
+Work needed on:
+- [ ] Documenation
+- [ ] Automatic token reauthentification
+- [ ] Tests (*Input tests files are under tests/input*)
 
 ## License
 

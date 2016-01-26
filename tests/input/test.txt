@@ -1,0 +1,24 @@
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+{
+    "climate": "Arid",
+    "diameter": "10465",
+    "gravity": "1 standard",
+    "name": "Tatooine",
+    "orbital_period": "304",
+    "population": "200000",
+    "residents": [
+        "http://swapi.co/api/people/1/",
+        "http://swapi.co/api/people/2/",
+        ...
+    ],
+    "rotation_period": "23",
+    "surface_water": "1",
+    "terrain": "Dessert",
+    "url": "http://swapi.co/api/planets/1/"
+}
