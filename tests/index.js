@@ -35,16 +35,17 @@ function readFilePromise (file) {
 // create storage instance
 const storage = objectStorage(config);
 
-const objectName = 'test.json';
-// const objectName = 'test.png';
+// const objectName = 'test.json';
+const objectName = 'test.png';
 // const objectName = 'test.txt';
-
 const objectPath = path.join(__dirname, `input/${objectName}`);
-
 const objectMimetype = mime.lookup(objectName);
 
+/**
+ * Start the tests
+ */
 storage.initiate()
-
+  // lookup tenant
   .then(() => storage.lookupTenant())
   .then(debug.bind((debug, 'TenantID info:')))
 
@@ -56,8 +57,8 @@ storage.initiate()
   .then(debug.bind(debug, 'Containers:'))
 
   // upload file
-  // .then(() => readFilePromise(objectPath))
-  .then(() => new Buffer(JSON.stringify({test: 'test'})))
+  .then(() => readFilePromise(objectPath))
+  // .then(() => new Buffer(JSON.stringify({test: 'test'})))
   .then((objectContents) => storage.putObject(objectName, objectMimetype, objectContents))
 
   // list container objects
@@ -67,21 +68,19 @@ storage.initiate()
   // retrieve container object
   .then(() => storage.getObject(objectName))
   .then((objectContents) => {
-    // return new Promise((resolve, reject) => {
-    //   const filename = `./out/${Date.now()}-${objectName}`;
+    // console.log(objectContents.toString('utf-8'));
 
-    //   console.log(objectContents.toString('base64'));
-    //   console.log(typeof objectContents.toString('base64'));
+    return new Promise((resolve, reject) => {
+      const filename = path.join(__dirname, 'out', objectName);
 
-    //   console.log(filename);
-    //   fs.writeFile(filename, objectContents, function (err, written) {
-    //     if (err) {
-    //       return reject(err);
-    //     }
+      fs.writeFile(filename, objectContents, function (err, written) {
+        if (err) {
+          return reject(err);
+        }
 
-    //     resolve();
-    //   });
-    // });
+        resolve();
+      });
+    });
   })
 
   // delete object

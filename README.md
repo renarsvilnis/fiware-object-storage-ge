@@ -306,7 +306,46 @@ storage.putObject(objectName, objectMimetype, objectContents))
 
 Returns `Promise`.
 
-TODO: documentation
+Fetches a object from the container, objectData is returned as a Buffer instance
+
+**Example getting and saving object to file**
+
+```javascript
+const path = require('path');
+
+storage.getObject('cat-photo.jpg')
+    .then((objectContents) => new Promise((resolve, reject) => {        
+        // save the object to file
+        const filename = path.join(__dirname, 'downloads', objectName);
+        fs.writeFile(filename, objectContents, function (err, written) {
+            return err ? reject(err) : resolve();
+        });
+    }))
+    .catch((err) => {
+        // returns Error instance
+    });
+```
+
+**Example getting and using an JSON object**
+
+```javascript
+const path = require('path');
+
+storage.getObject('people.json')
+    .then((objectContents) => new Promise((resolve, reject) => {
+        // first convert the buffer to string
+        objectContents = objectContents.toString('utf-8');
+        
+        // conver the string to values
+        objectContents = JSON.parse(objectContents);
+        
+        console.log(objectContents);
+        // > [{name: 'John', surname: 'Rambo'}, ...]
+    }))
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
 ### `deleteObject(objectName, [containerName])`
 - `objectName` : String
@@ -354,11 +393,11 @@ Feel free to fork or add issues/pull-requests if something changes in the API sc
 
 These are the things that might need some work on:
 
-- [ ] Add missing documenatation
+- [x] Add missing documenatation
 - [ ] Automatic token reauthentification
 - [ ] Add `initiateSync` method, either with [`deasync`](https://github.com/abbr/deasync) or [`sync`](https://www.npmjs.com/package/sync) or [`node-sync`](https://github.com/ybogdanov/node-sync).
 - [ ] `config.tenant` implementation
-- [ ] Tests (*Input tests files are under tests/input*)
+- [ ] Write tests (*Input tests files are under tests/input*)
 - [ ] Add check if instance is initiated before executing methods
 - [ ] Create more readable errors
 - [ ] Add option to clear force delete container, deletes all objects in it and then deletes the container itself
