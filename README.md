@@ -306,7 +306,7 @@ storage.putObject(objectName, objectMimetype, objectContents))
 
 Returns `Promise`.
 
-Fetches a object from the container, objectData is returned as a Buffer instance
+Fetches a object from the container, object data is returned as a Buffer instance. Examples below show ways how to handle the buffer.
 
 **Example getting and saving object to file**
 
