@@ -76,9 +76,9 @@ storage.initiate()
 ```
 
 ### `initiate()`
-TODO: documentation
-
 Returns `Promise`
+
+TODO: documentation
 
 > If runned again, the function will just refresh the authentication token. Can be used as a "reconnect" (reauthentification) mechanism.
 
@@ -111,9 +111,9 @@ console.log(storage.getActiveContainer());
 ```
 
 ### `getActiveContainer()`
-Helper function that get's the name of active container for the current storage instance.
-
 Returns `String`.
+
+Helper function that get's the name of active container for the current storage instance.
 
 ```javascript
 const config = {
