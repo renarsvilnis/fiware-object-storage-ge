@@ -258,7 +258,7 @@ readFilePromise(objectPath)
 
 ```javascript
 const objectName = 'example.json';
-const objectMimetype = 'application/json;
+const objectMimetype = 'application/json';
 
 let objectContents = {
     name: "John",
