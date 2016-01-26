@@ -155,7 +155,16 @@ storage.lookupTenant()
 ### `getContainerList()`
 Returns `Promise`.
 
-TODO: documentation
+Retrieves an array of containers that are available for the user *in the specific region* (don't qoute me on this). Returns an empty array if no containers available.
+
+```javascript
+storage.getContainerList()
+    .then((containers) => console.log(containers))
+    // > ['test-container', ...]
+    .catch(err) => {
+        // returns Error instance
+    });
+```
 
 ### `createContainer(containerName, [setActive = false])`
 - `containerName` : String
@@ -180,7 +189,16 @@ storage.createContainer('new-container')
 
 Returns `Promise`.
 
-TODO: documentation
+Retrieves an array of objects names that are in the container. If there are no objects present returns an empty array.
+
+```javascript
+storage.listContainer('new-container')
+    .then((objects) => console.log(objects))
+    // > ['cat-photo.jpg', 'test.json', ...]
+    .catch(err) => {
+        // returns Error instance
+    });
+```
 
 ### `deleteContainer(containerName)`
 - `containerName` : String
@@ -298,6 +316,8 @@ Returns `Promise`.
 
 Deletes a object from the specified or instance active container.
 
+> **To delete a container it must be empty** else will recieve an Error.
+
 ```javascript
 storage. deleteObject('cat-picture.jpg', 'new-container')
     .then(() => {
@@ -332,7 +352,7 @@ CONTAINER=... npm run test:nodemon
 
 Feel free to fork or add issues/pull-requests if something changes in the API schema or authentification process.
 
-Work needed on:
+These are the things that might need some work on:
 
 - [ ] Add missing documenatation
 - [ ] Automatic token reauthentification
@@ -341,6 +361,8 @@ Work needed on:
 - [ ] Tests (*Input tests files are under tests/input*)
 - [ ] Add check if instance is initiated before executing methods
 - [ ] Create more readable errors
+- [ ] Add option to clear force delete container, deletes all objects in it and then deletes the container itself
+- [ ] Investigate why `listContainer` and `getContainerList` returns text response with the objectnames, instead of a json response with more detailed info as requests that fetch storage container info on `cloud.lab.fiware.org`
 
 ## License
 

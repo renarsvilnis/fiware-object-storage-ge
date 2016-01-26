@@ -51,6 +51,7 @@ storage.initiate()
   // create container
   .then(() => storage.createContainer(config.container))
 
+  // list available containers
   .then(() => storage.getContainerList())
   .then(debug.bind(debug, 'Containers:'))
 
@@ -58,23 +59,14 @@ storage.initiate()
   // .then(() => readFilePromise(objectPath))
   .then(() => new Buffer(JSON.stringify({test: 'test'})))
   .then((objectContents) => storage.putObject(objectName, objectMimetype, objectContents))
-  .then((res) => {
-    console.log(res);
-  })
 
   // list container objects
   .then(() => storage.listContainer())
-  // .then(debug.bind(debug, 'Container files:'))
-  .then((items) => {
-    console.log('t', typeof items);
-    console.log('l', items.length);
-    console.log(items);
-  })
+  .then(debug.bind(debug, 'Container files:'))
 
   // retrieve container object
   .then(() => storage.getObject(objectName))
   .then((objectContents) => {
-    console.log(objectContents);
     // return new Promise((resolve, reject) => {
     //   const filename = `./out/${Date.now()}-${objectName}`;
 
@@ -93,10 +85,10 @@ storage.initiate()
   })
 
   // delete object
-  // .then(() => storage.deleteObject(objectName))
+  .then(() => storage.deleteObject(objectName))
 
   // remove container
-  // .then(() => storage.deleteContainer(config.container))
+  .then(() => storage.deleteContainer(config.container))
 
   .catch((err) => {
     console.log(err.message);
