@@ -2,7 +2,7 @@
 
 const debug = require('debug')('fiware-object-storage-ge:test');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 const mime = require('mime');
 
 const objectStorage = require('../lib/index.js');
@@ -44,6 +44,10 @@ const objectPath = path.join(__dirname, `input/${objectName}`);
 const objectMimetype = mime.lookup(objectName);
 
 storage.initiate()
+
+  .then(() => storage.lookupTenant())
+  .then(debug.bind((debug, 'TenantID info:')))
+
   // create container
   .then(() => storage.createContainer(config.container))
 
@@ -61,7 +65,6 @@ storage.initiate()
   .then(() => storage.listContainer())
   // .then(debug.bind(debug, 'Container files:'))
   .then((items) => {
-
     console.log('t', typeof items);
     console.log('l', items.length);
     console.log(items);

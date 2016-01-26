@@ -32,8 +32,8 @@ const config = {
   // The region where the storage instace is located in
   // By default "Spain2"
   region: 'Spain2',
-  // TODO
-  tenant: '<string>'
+  // Note: tenant option not yet implemented
+  // tenant: '<string>'
 };
 
 // Create a new fiware object storage instance and passing the config.
@@ -76,13 +76,21 @@ storage.initiate()
 ```
 
 ### `initiate()`
-Returns `Promise`
+Returns `Promise`.
 
-TODO: documentation
+Function that must be used to initiate the storage. The function internally fetches the `tenant` and retrieves the security token which is needed for making the requests for the FIWARE Object Storage API.
 
-> If runned again, the function will just refresh the authentication token. Can be used as a "reconnect" (reauthentification) mechanism.
+```javascript
+storage.init()
+    .then(() => {
+        // initiated the instance succesfully
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
-> Currently there isn't a automatic token fetch for reauthentification when expired.
+> If runned again, the function will just refresh the authentication token. Can be used as a reauthentification mechanism. **Currently there isn't a automatic token fetch for reauthentification when expired.**
 
 ### `setActiveContainer(containerName)`
 - `containerName`: String
@@ -128,32 +136,104 @@ console.log(storage.getActiveContainer());
 ```
 
 ### `lookupTenant()`
+Returns `Promise`.
+
 Helper function for identifying the tenant for the region.
 
-TODO: documentation
+> As tenants are static per Object Storage instance, once you query the tenant ID you can pass it to the config to reduce initiate time. **NOT YET IMPLEMENTED**
 
-> As tenants are static per Object Storage instance, once you query the tenant ID you can pass it to the config to reduce initiate time. **NOT IMPLEMENTED YET**
+```javascript
+storage.lookupTenant()
+    // Returns a string id for the tenant
+    .then((tenantID) => console.log(tenantID);
+    // > '336c88499c...'
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
 ### `getContainerList()`
+Returns `Promise`.
+
 TODO: documentation
 
-### `createContainer(containerName)`
-TODO: documentation
+### `createContainer(containerName, [setActive = false])`
+- `containerName` : String
+- `[setActive]` : Boolean - Default `false`
+
+Returns `Promise`.
+
+Create a new container in the config specified region. And if specified sets as the active Container
+
+```javascript
+storage.createContainer('new-container')
+    .then(() => {
+        // container created
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
 ### `listContainer([containerName])`
-TODO: documenation
+- `[containerName]` : String - Defaults top the active storage instance container
+
+Returns `Promise`.
+
+TODO: documentation
 
 ### `deleteContainer(containerName)`
-TODO: documenation
+- `containerName` : String
+
+Returns `Promise`.
+
+Finds and deletes a container in the config specified region.
+
+```javascript
+storage.deleteContainer('new-container')
+    .then(() => {
+        // container deleted
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
 ### `putFile(objectName, objectMimetype, objectContents, [containerName])`
-TODO: documenation
+- `objectName` : String
+- `objectMimetype` : String - Mime-Type for the file your trying to upload
+- `objectContents` : TODO
+- `[containerName]` : String - Defaults top the active storage instance container
+
+Returns `Promise`.
+
+TODO: documentation
 
 ### `getFile(objectName, [containerName])`
-TODO: documenation
+- `objectName` : String
+- `[containerName]` : String - Defaults top the active storage instance container
+
+Returns `Promise`.
+
+TODO: documentation
 
 ### `deleteFile(objectName, [containerName])`
-TODO: documenation
+- `objectName` : String
+- `[containerName]` : String - Defaults to the active storage instance container
+
+Returns `Promise`.
+
+Deletes a object from the specified or instance active container.
+
+```javascript
+storage.deleteFile('cat-picture.jpg', 'new-container')
+    .then(() => {
+        // file deleted
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
 
 ## Testing
 Although there aren't any unit tests written, it is possible to do a system test for testing out the functionality of the module as following:
@@ -180,9 +260,13 @@ CONTAINER=... npm run test:nodemon
 Feel free to fork or add issues/pull-requests if something changes in the API schema or authentification process.
 
 Work needed on:
-- [ ] Documenation
+
+- [ ] Add missing documenatation
 - [ ] Automatic token reauthentification
+- [ ] Add `initiateSync` method, either with [`deasync`](https://github.com/abbr/deasync) or [`sync`](https://www.npmjs.com/package/sync) or [`node-sync`](https://github.com/ybogdanov/node-sync).
+- [ ] `config.tenant` implementation
 - [ ] Tests (*Input tests files are under tests/input*)
+- [ ] Add check if instance is initiated before executing methods
 
 ## License
 
