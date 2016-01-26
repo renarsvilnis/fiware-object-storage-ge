@@ -199,25 +199,66 @@ storage.deleteContainer('new-container')
     });
 ```
 
-### `putFile(objectName, objectMimetype, objectContents, [containerName])`
+### `putObject(objectName, objectMimetype, objectContents, [containerName])`
+- `objectName` : String - Unique object name
+- `objectMimetype` : String - MIME Type for the object you are trying to upload
+- `objectContents` : Buffer
+- `[containerName]` : String - Defaults top the active storage instance container
+
+Returns `Promise`.
+
+> Make sure that `objectName` is only the filename and extension without the path, unless if thats what you want.
+> Filename can be found by using `path.basename('/path/to/cat-photo.jpg')`
+
+> **If a object with the name already exists `putObject` will override it!**
+
+**Example uploading a image file.**
+
+```javascript
+// 3rd party libary for getting MIME type
+// Ref: https://www.npmjs.com/package/mime
+const mime = require('mime');
+
+/**
+ * Helper function that wrapps fs.readFile into a promise
+ * @param {String} File path
+ * @return {Promise}
+ */
+function readFilePromise (file) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(file, function (err, buffer) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(buffer);
+    });
+  });
+}
+
+const objectName = 'cat-photo.jpg';
+const objectPath = `/path/to/object/${objectName}`;
+const objectMimetype = mime.lookup(objectPath);
+
+readFilePromise(objectPath)
+    .then((objectContents) => storage.putObject(objectName, objectMimetype, objectContents))
+    .then(() => {
+        // Object has been uploaded
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
+
+### `getObject(objectName, [containerName])`
 - `objectName` : String
-- `objectMimetype` : String - Mime-Type for the file your trying to upload
-- `objectContents` : TODO
 - `[containerName]` : String - Defaults top the active storage instance container
 
 Returns `Promise`.
 
 TODO: documentation
 
-### `getFile(objectName, [containerName])`
-- `objectName` : String
-- `[containerName]` : String - Defaults top the active storage instance container
-
-Returns `Promise`.
-
-TODO: documentation
-
-### `deleteFile(objectName, [containerName])`
+### `deleteObject(objectName, [containerName])`
 - `objectName` : String
 - `[containerName]` : String - Defaults to the active storage instance container
 
@@ -226,9 +267,9 @@ Returns `Promise`.
 Deletes a object from the specified or instance active container.
 
 ```javascript
-storage.deleteFile('cat-picture.jpg', 'new-container')
+storage. deleteObject('cat-picture.jpg', 'new-container')
     .then(() => {
-        // file deleted
+        // object deleted
     })
     .catch((err) => {
         // returns Error instance
@@ -250,8 +291,8 @@ npm install
 # Run the test - for it to work you need to supply the test with the below
 # listed config entries
 CONTAINER=<your-container-name> USER=<fiware-account-email> PASSWORD=<fiware-account-password> REGION=<object-storage-region> npm run test
-# when developing it might be usefull to nodemon on top that reruns the test
-# file on each file modification
+# when developing it might be usefull to nodemon on top that reruns the tests
+# on file modification
 CONTAINER=... npm run test:nodemon
 ```
 
@@ -267,6 +308,7 @@ Work needed on:
 - [ ] `config.tenant` implementation
 - [ ] Tests (*Input tests files are under tests/input*)
 - [ ] Add check if instance is initiated before executing methods
+- [ ] Create more readable errors
 
 ## License
 
