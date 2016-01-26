@@ -202,15 +202,19 @@ storage.deleteContainer('new-container')
 ### `putObject(objectName, objectMimetype, objectContents, [containerName])`
 - `objectName` : String - Unique object name
 - `objectMimetype` : String - MIME Type for the object you are trying to upload
-- `objectContents` : Buffer
+- `objectContents` : [Buffer](https://nodejs.org/api/buffer.html#buffer_new_buffer_str_encoding)
 - `[containerName]` : String - Defaults top the active storage instance container
 
 Returns `Promise`.
 
+Upload a file object to a container.
+
 > Make sure that `objectName` is only the filename and extension without the path, unless if thats what you want.
 > Filename can be found by using `path.basename('/path/to/cat-photo.jpg')`
 
-> **If a object with the name already exists `putObject` will override it!**
+> **Object names are unique to the container, if a object with the name already exists `putObject` will override the object!**
+> 
+> **Object contents must be a Buffer class instance** which can be taken directly from reading a file or by creating a buffer from string [`new Buffer(str[, encoding])`](https://nodejs.org/api/buffer.html#buffer_new_buffer_str_encoding). If trying to upload a object or array or number you need to convert it to a string. Done by `JSON.stringify(<variable>)`.
 
 **Example uploading a image file.**
 
@@ -249,6 +253,34 @@ readFilePromise(objectPath)
         // returns Error instance
     });
 ```
+
+**Example uploading a JS object.**
+
+```javascript
+const objectName = 'example.json';
+const objectMimetype = 'application/json;
+
+let objectContents = {
+    name: "John",
+    surname: "Rambo"
+};
+
+// stringify the object
+// Note: good to run through stringify even if is already a string
+objectContents = JSON.stringify(objectContents);
+
+// create a Buffer instane from a string
+objectContents = new Buffer(objectContents);
+
+storage.putObject(objectName, objectMimetype, objectContents))
+    .then(() => {
+        // Object has been uploaded
+    })
+    .catch((err) => {
+        // returns Error instance
+    });
+```
+
 
 ### `getObject(objectName, [containerName])`
 - `objectName` : String

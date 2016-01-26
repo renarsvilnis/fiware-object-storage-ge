@@ -55,7 +55,8 @@ storage.initiate()
   .then(debug.bind(debug, 'Containers:'))
 
   // upload file
-  .then(() => readFilePromise(objectPath))
+  // .then(() => readFilePromise(objectPath))
+  .then(() => new Buffer(JSON.stringify({test: 'test'})))
   .then((objectContents) => storage.putObject(objectName, objectMimetype, objectContents))
   .then((res) => {
     console.log(res);
@@ -73,6 +74,7 @@ storage.initiate()
   // retrieve container object
   .then(() => storage.getObject(objectName))
   .then((objectContents) => {
+    console.log(objectContents);
     // return new Promise((resolve, reject) => {
     //   const filename = `./out/${Date.now()}-${objectName}`;
 
