@@ -140,7 +140,7 @@ Returns `Promise`.
 
 Helper function for identifying the tenant for the region.
 
-> As tenants are static per Object Storage instance, once you query the tenant ID you can pass it to the config to reduce initiate time. **NOT YET IMPLEMENTED**
+> As tenants are static per Object Storage instance, once find out the tenant ID you can pass it in through the config to reduce initiation time.
 
 ```javascript
 storage.lookupTenant()
@@ -396,7 +396,7 @@ These are the things that might need some work on:
 - [x] Add missing documenatation
 - [ ] Automatic token reauthentification
 - [ ] Add `initiateSync` method, either with [`deasync`](https://github.com/abbr/deasync) or [`sync`](https://www.npmjs.com/package/sync) or [`node-sync`](https://github.com/ybogdanov/node-sync).
-- [ ] `config.tenant` implementation
+- [x] `config.tenant` implementation
 - [ ] Write tests (*Input tests files are under tests/input*)
 - [ ] Add check if instance is initiated before executing methods
 - [ ] Create more readable errors
