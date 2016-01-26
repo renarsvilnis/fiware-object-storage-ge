@@ -75,46 +75,84 @@ storage.initiate()
     });
 ```
 
-### initiate()
+### `initiate()`
 TODO: documentation
+
+Returns `Promise`
 
 > If runned again, the function will just refresh the authentication token. Can be used as a "reconnect" (reauthentification) mechanism.
 
->Currently there isn't a automatic token fetch for reauthentification when expired.
+> Currently there isn't a automatic token fetch for reauthentification when expired.
 
-### setActiveContainer(containerName)
-- `containerName` String
+### `setActiveContainer(containerName)`
+- `containerName`: String
 
-Helper functions that sets the active container to passed in `containerName`. The other container must be on the same FIWARE region. `setActiveContainer` Used in situations where you wan't to switch the container which is used
+Returns `undefined`.
 
-Returns undefined.
+Helper function that changes the active container for the storage instance. Used in case you need to change the container name so that you won't need to pass in the the `containerName` property in methods that require it
 
-### lookupTenant()
+> The other container your setting active must be on the same FIWARE region. If it isn't just create a new storage instance.
+
+```javascript
+const config = {
+  ...
+  container: 'my-container'
+};
+
+const storage = fiwareObjectStorage(config);
+
+console.log(storage.getActiveContainer());
+// > 'my-container'
+
+storage.setActiveContainer('test-container');
+
+console.log(storage.getActiveContainer());
+// > 'test-container'
+```
+
+### `getActiveContainer()`
+Helper function that get's the name of active container for the current storage instance.
+
+Returns `String`.
+
+```javascript
+const config = {
+  ...
+  container: 'my-container'
+};
+
+const storage = fiwareObjectStorage(config);
+
+console.log(storage.getActiveContainer());
+// > 'my-container'
+```
+
+### `lookupTenant()`
 Helper function for identifying the tenant for the region.
 
 TODO: documentation
 
 > As tenants are static per Object Storage instance, once you query the tenant ID you can pass it to the config to reduce initiate time. **NOT IMPLEMENTED YET**
 
-### getContainerList()
+### `getContainerList()`
 TODO: documentation
 
-### createContainer(containerName)
+### `createContainer(containerName)`
 TODO: documentation
 
-### listContainer(containerName)
+### `listContainer([containerName])`
 TODO: documenation
 
-### deleteContainer(containerName)
+### `deleteContainer(containerName)`
 TODO: documenation
 
-### putFile()
+### `putFile(objectName, objectMimetype, objectContents, [containerName])`
 TODO: documenation
 
-### getFile()
+### `getFile(objectName, [containerName])`
 TODO: documenation
 
-### deleteFile()
+### `deleteFile(objectName, [containerName])`
 TODO: documenation
 
 ## Testing
