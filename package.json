@@ -1,6 +1,6 @@
 {
   "name": "fiware-object-storage-ge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FIWARE Object Storage GE API",
   "main": "lib/index.js",
   "keywords": [
