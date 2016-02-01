@@ -221,7 +221,7 @@ storage.deleteContainer('new-container')
 - `objectName` : String - Unique object name
 - `objectMimetype` : String - MIME Type for the object you are trying to upload
 - `objectContents` : [Buffer](https://nodejs.org/api/buffer.html#buffer_new_buffer_str_encoding)
-- `objectMetadata` : Object - An object of additional metadata for the file. Default `{}`
+- `[objectMetadata]` : Object - An object of additional metadata for the file. Default `{}`
 - `[containerName]` : String - Defaults top the active storage instance container
 
 Returns `Promise`.
