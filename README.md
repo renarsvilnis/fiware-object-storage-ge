@@ -217,10 +217,11 @@ storage.deleteContainer('new-container')
     });
 ```
 
-### `putObject(objectName, objectMimetype, objectContents, [containerName])`
+### `putObject(objectName, objectMimetype, objectContents, [objectMetadata = {}], [containerName])`
 - `objectName` : String - Unique object name
 - `objectMimetype` : String - MIME Type for the object you are trying to upload
 - `objectContents` : [Buffer](https://nodejs.org/api/buffer.html#buffer_new_buffer_str_encoding)
+- `objectMetadata` : Object - An object of additional metadata for the file. Default `{}`
 - `[containerName]` : String - Defaults top the active storage instance container
 
 Returns `Promise`.
@@ -304,7 +305,26 @@ storage.putObject(objectName, objectMimetype, objectContents))
 - `objectName` : String
 - `[containerName]` : String - Defaults top the active storage instance container
 
-Returns `Promise`.
+Returns `Promise` that returns a object on successful response. The response object will contain:
+
+- `mimeType`: String - MIMEType corresponding to the file
+- `metadata`: Object - Additional file metadata which where set during uploading
+- `value`: Buffer - Buffer class instance
+
+**Example response of an image**
+
+```json
+{
+    mimeType: 'image/png',
+    // Note: metadata is user generated!
+    metadata: {
+        width: 640,
+        height: 320,
+        // ...
+    },
+    value: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 00 88 00 00 00 20 08 06 00 00 00 c9 f5 30 d1 00 00 0a a8 69 43 43 50 49 43 43 20 50 72 6f 66 69 ... >
+}
+```
 
 Fetches a object from the container, object data is returned as a Buffer instance. Examples below show ways how to handle the buffer.
 
@@ -314,10 +334,14 @@ Fetches a object from the container, object data is returned as a Buffer instanc
 const path = require('path');
 
 storage.getObject('cat-photo.jpg')
-    .then((objectContents) => new Promise((resolve, reject) => {        
+    .then((res) => new Promise((resolve, reject) => {
+        // if needed response may hold an additional metadata object
+        // if specified during object upload
+        console.log(res.metadata);
+       
         // save the object to file
-        const filename = path.join(__dirname, 'downloads', objectName);
-        fs.writeFile(filename, objectContents, function (err, written) {
+        const filename = path.join(__dirname, 'downloads', 'cat-photo.jpg');
+        fs.writeFile(filename, res.value, function (err, written) {
             return err ? reject(err) : resolve();
         });
     }))
@@ -332,14 +356,14 @@ storage.getObject('cat-photo.jpg')
 const path = require('path');
 
 storage.getObject('people.json')
-    .then((objectContents) => new Promise((resolve, reject) => {
+    .then((res) => new Promise((resolve, reject) => {
         // first convert the buffer to string
-        objectContents = objectContents.toString('utf-8');
+        let resObj = res.value.toString('utf-8');
         
         // conver the string to values
-        objectContents = JSON.parse(objectContents);
+        resObj = JSON.parse(resObj);
         
-        console.log(objectContents);
+        console.log(resObj);
         // > [{name: 'John', surname: 'Rambo'}, ...]
     }))
     .catch((err) => {

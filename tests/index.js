@@ -32,14 +32,23 @@ function readFilePromise (file) {
   });
 }
 
+/**
+ * fs.writeFile promise wrapper
+ */
+function writeFilePromise (filepath, filecontents) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filepath, filecontents, function (err, written) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve();
+    });
+  });
+}
+
 // create storage instance
 const storage = objectStorage(config);
-
-// const objectName = 'test.json';
-const objectName = 'test.png';
-// const objectName = 'test.txt';
-const objectPath = path.join(__dirname, `input/${objectName}`);
-const objectMimetype = mime.lookup(objectName);
 
 /**
  * Start the tests
@@ -56,35 +65,41 @@ storage.initiate()
   .then(() => storage.getContainerList())
   .then(debug.bind(debug, 'Containers:'))
 
-  // upload file
-  .then(() => readFilePromise(objectPath))
-  // .then(() => new Buffer(JSON.stringify({test: 'test'})))
-  .then((objectContents) => storage.putObject(objectName, objectMimetype, objectContents))
+  // upload files
+  // JSON object
+  .then(() => readFilePromise(path.join(__dirname, 'input', 'test.json')))
+  .then((contents) => storage.putObject('test.json', mime.lookup('test.json'), contents, {hello: 'world'}))
+  // Plain Text file
+  .then(() => readFilePromise(path.join(__dirname, 'input', 'test.txt')))
+  .then((contents) => storage.putObject('test.txt', mime.lookup('test.txt'), contents))
+  // Image
+  .then(() => readFilePromise(path.join(__dirname, 'input', 'test.png')))
+  .then((contents) => storage.putObject('test.png', mime.lookup('test.png'), contents))
 
   // list container objects
   .then(() => storage.listContainer())
   .then(debug.bind(debug, 'Container files:'))
 
   // retrieve container object
-  .then(() => storage.getObject(objectName))
-  .then((objectContents) => {
-    // console.log(objectContents.toString('utf-8'));
-
-    return new Promise((resolve, reject) => {
-      const filename = path.join(__dirname, 'out', objectName);
-
-      fs.writeFile(filename, objectContents, function (err, written) {
-        if (err) {
-          return reject(err);
-        }
-
-        resolve();
-      });
-    });
+  // JSON object
+  .then(() => storage.getObject('test.json'))
+  .then((contents) => {
+    // debug fill contain additional metadata
+    debug(contents);
+    return contents;
   })
+  .then((contents) => writeFilePromise(path.join(__dirname, 'out', 'test.json'), contents.value))
+  // Plain Text file
+  .then(() => storage.getObject('test.txt'))
+  .then((contents) => writeFilePromise(path.join(__dirname, 'out', 'test.txt'), contents.value))
+  // Image
+  .then(() => storage.getObject('test.png'))
+  .then((contents) => writeFilePromise(path.join(__dirname, 'out', 'test.png'), contents.value))
 
   // delete object
-  .then(() => storage.deleteObject(objectName))
+  .then(() => storage.deleteObject('test.json'))
+  .then(() => storage.deleteObject('test.txt'))
+  .then(() => storage.deleteObject('test.png'))
 
   // remove container
   .then(() => storage.deleteContainer(config.container))
