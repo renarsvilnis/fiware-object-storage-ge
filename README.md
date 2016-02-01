@@ -313,7 +313,7 @@ Returns `Promise` that returns a object on successful response. The response obj
 
 **Example response of an image**
 
-```json
+```javascript
 {
     mimeType: 'image/png',
     // Note: metadata is user generated!
