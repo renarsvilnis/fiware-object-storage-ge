@@ -25,10 +25,10 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^2.2.0",
-    "mime": "1.3.4",
     "superagent": "^1.6.1"
   },
   "devDependencies": {
+    "mime": "1.3.4",
     "babel-eslint": "5.0.0-beta6",
     "eslint": "1.10.3",
     "eslint-config-renarsvilnis": "1.3.1",
