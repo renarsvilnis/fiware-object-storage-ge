@@ -23,8 +23,8 @@ const fiwareObjectStorage = require('fiware-object-storage-ge');
 
 const config = {
   // IP of the Auth Services, no need to pass it explicitly 99%
-  // By defaults "cloud.lab.fi-ware.org"
-  auth: 'cloud.lab.fi-ware.org'
+  // By defaults "cloud.lab.fiware.org:4730"
+  auth: 'cloud.lab.fiware.org:4730'
   // Default container you want to work with, as convenience
   container: 'my-container',           
   // Your FIWARE account email
