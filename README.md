@@ -4,8 +4,7 @@
 
 ![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
 ![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge.svg)
-![Test coverage](https://img.shields.io/coveralls/renarsvilnis/fiware-object-storage-ge.svg)
-
+[![Coverage Status](https://coveralls.io/repos/github/renarsvilnis/fiware-object-storage-ge/badge.svg?branch=master)](https://coveralls.io/github/renarsvilnis/fiware-object-storage-ge?branch=master)
 
 Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidkahl/fiware-object-storage) repository ended up as a ground up rewrite referencing the [FIWARE python example](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Object_Storage_-_User_and_Programmers_Guide#Example_Python).
 
