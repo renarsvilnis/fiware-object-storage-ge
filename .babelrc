@@ -3,5 +3,4 @@
   "plugins": [
     ["transform-decorators-legacy"]
   ],
-  "ignore": []
 }
