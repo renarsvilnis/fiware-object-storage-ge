@@ -7,8 +7,8 @@ Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidk
 ## Status
 
 ![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
-![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge.svg)
-![Test coverage](https://img.shields.io/coveralls/renarsvilnis/fiware-object-storage-ge.svg)
+![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge/master.svg)
+![Test coverage](https://img.shields.io/coveralls/renarsvilnis/fiware-object-storage-ge/master.svg)
 
 ## Requirements
 
