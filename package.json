@@ -16,7 +16,7 @@
     "test": "ava --verbose",
     "cover": "nyc npm run test",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "npm run cover && nyc report --reporter=text-lcov | coveralls",
     "watch:test": "npm run test --watch",
     "watch:cover": "nodemon --quiet --watch server --watch src --exec npm run cover -s",
     "precommit": "npm run test && npm run lint",
@@ -63,8 +63,6 @@
   "nyc": {
     "reporter": [
       "lcov",
-      "text",
-      "html",
       "text-lcov"
     ]
   },
