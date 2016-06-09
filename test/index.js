@@ -9,9 +9,13 @@ import test from 'ava';
 import FiwareStorage from '../index';
 import config from './config.json';
 
-test.skip('initiate', (t) => {});
+test.serial('initiate - should initiate', function * (t) {
+  const storage = new FiwareStorage(config);
 
-test('setActiveContainer', (t) => {
+  yield t.notThrows(storage.initiate());
+});
+
+test('setActiveContainer - should set active container', (t) => {
   const oldContainer = 'old-container';
   const newContainer = 'new-container';
 
@@ -25,15 +29,55 @@ test('setActiveContainer', (t) => {
   t.is(storage.getActiveContainer(), newContainer);
 });
 
-test('getActiveContainer', (t) => {
+test('getActiveContainer - should get current active container', (t) => {
   const storage = new FiwareStorage({container: 'test'});
   t.is(storage.getActiveContainer(), 'test');
 });
 
 test.skip('lookupTenant', (t) => {});
-test.skip('createContainer', (t) => {});
-test.skip('deleteContainer', (t) => {});
-test.skip('getContainerList', (t) => {});
+
+test.serial('createContainer - should create container', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  const container = 'my-super-awesome-container';
+
+  // check if current container isn't the new one already
+  t.not(storage.getActiveContainer(), container);
+
+  yield t.notThrows(storage.createContainer(container));
+
+  // createContainer should not have set the the new container as active
+  t.not(storage.getActiveContainer(), container);
+
+  // validate if container created
+  const containers = yield storage.getContainerList();
+  t.true(containers.indexOf(container) > -1);
+
+  // cleanup
+  yield storage.deleteContainer(container);
+});
+
+test.serial('deleteContainer', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  const container = 'my-test-container';
+  yield storage.createContainer(container);
+  yield t.notThrows(storage.deleteContainer(container));
+});
+
+test.skip('getContainerList', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  const containers = yield storage.getContainerList();
+
+  // TODO: test more
+
+  t.true(Array.isArray(containers));
+});
+
 test.skip('listContainer', (t) => {});
 test.skip('putObject', (t) => {});
 test.skip('getObject', (t) => {});
