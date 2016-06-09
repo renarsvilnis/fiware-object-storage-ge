@@ -3,4 +3,7 @@
   "plugins": [
     ["transform-decorators-legacy"]
   ],
+  "ignore": [
+    "lib/**/!(*.test).js"
+  ]
 }
