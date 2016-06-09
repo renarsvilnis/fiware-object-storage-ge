@@ -4,6 +4,7 @@
     ["transform-decorators-legacy"]
   ],
   "ignore": [
-    "lib/**/!(*.test).js"
+    "./lib/**/*.js",
+    "./index.js"
   ]
 }
