@@ -10,13 +10,10 @@
     "Object Storage"
   ],
   "scripts": {
-    "test-old": "DEBUG=fiware-object-storage-ge* node ./tests/index.js",
-    "test-old:nodemon": "DEBUG=fiware-object-storage-ge* nodemon --ignore 'tests/*.json' ./tests/index.js",
     "lint": "eslint ./lib",
     "test": "ava --verbose",
-    "cover": "nyc npm run test",
-    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "coverage": "npm run cover && nyc report --reporter=text-lcov | coveralls",
+    "cover": "nyc --reporter=text --reporter=lcov --reporter=html npm run test",
+    "coverage": "nyc --reporter=text-lcov npm run test && nyc report --reporter=text-lcov | coveralls",
     "watch:test": "npm run test --watch",
     "watch:cover": "nodemon --quiet --watch server --watch src --exec npm run cover -s",
     "precommit": "npm run test && npm run lint",
@@ -60,15 +57,10 @@
     "nodemon": "1.9.2",
     "nyc": "6.4.4"
   },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text-lcov"
-    ]
-  },
+  "nyc": {},
   "ava": {
     "files": [
-      "./lib/**/*.test.js"
+      "./test/index.js"
     ],
     "babel": "inherit",
     "require": [

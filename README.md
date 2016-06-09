@@ -406,17 +406,21 @@ CONTAINER=<your-container-name> USER=<fiware-account-email> PASSWORD=<fiware-acc
 CONTAINER=... npm run test:nodemon
 ```
 
+> Module has support for [debug](https://www.npmjs.com/package/debug) package and can be used then contributing by prefixing the test command:
+>
+> `DEBUG=fiware-object-storage-ge* npm run test`
+>
+> Can be helpful to see what happens under the hood
+
 ## Contributing
 
 Feel free to fork or add issues/pull-requests if something changes in the API schema or authentification process.
 
 These are the things that might need some work on:
 
-- [x] Add missing documenatation
+- [ ] Throw errors for missing config params
 - [ ] Automatic token reauthentification
 - [ ] Add `initiateSync` method, either with [`deasync`](https://github.com/abbr/deasync) or [`sync`](https://www.npmjs.com/package/sync) or [`node-sync`](https://github.com/ybogdanov/node-sync).
-- [x] `config.tenant` implementation
-- [ ] Write tests (*Input tests files are under tests/input*)
 - [ ] Add check if instance is initiated before executing methods
 - [ ] Create more readable errors
 - [ ] Add option to clear force delete container, deletes all objects in it and then deletes the container itself

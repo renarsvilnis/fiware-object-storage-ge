@@ -120,3 +120,4 @@ node_modules
 tests/out
 .nyc_output
 coverage
+test/config.json
