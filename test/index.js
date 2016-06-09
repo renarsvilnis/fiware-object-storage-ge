@@ -25,12 +25,12 @@ if (process.env.TRAVIS) {
   config = require('./config.json');
 }
 
-
-
 test.serial('initiate - should initiate', function * (t) {
   const storage = new FiwareStorage(config);
 
   yield t.notThrows(storage.initiate());
+
+  // FIXME: succesffuly results if invalid region provided
 });
 
 test('setActiveContainer - should set active container', (t) => {
