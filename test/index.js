@@ -1,11 +1,13 @@
 'use strict';
 
 import test from 'ava';
+import uuid from 'node-uuid';
 // const debug = require('debug')('fiware-object-storage-ge:test');
 // const fs = require('fs');
 // const path = require('path');
 // const mime = require('mime');
 
+// import {readFilePromise, writeFilePromise} from './helpers';
 import FiwareStorage from '../index';
 
 /**
@@ -23,6 +25,8 @@ if (process.env.TRAVIS) {
   config = require('./config.json');
 }
 
+
+
 test.serial('initiate - should initiate', function * (t) {
   const storage = new FiwareStorage(config);
 
@@ -30,8 +34,8 @@ test.serial('initiate - should initiate', function * (t) {
 });
 
 test('setActiveContainer - should set active container', (t) => {
-  const oldContainer = 'old-container';
-  const newContainer = 'new-container';
+  const oldContainer = uuid.v4();
+  const newContainer = uuid.v4();
 
   // create storage instance
   const _config = Object.assign({}, config, {container: oldContainer});
@@ -44,8 +48,9 @@ test('setActiveContainer - should set active container', (t) => {
 });
 
 test('getActiveContainer - should get current active container', (t) => {
-  const storage = new FiwareStorage({container: 'test'});
-  t.is(storage.getActiveContainer(), 'test');
+  const container = uuid.v4();
+  const storage = new FiwareStorage({container});
+  t.is(storage.getActiveContainer(), container);
 });
 
 test.skip('lookupTenant', (t) => {});
@@ -54,7 +59,7 @@ test.serial('createContainer - should create container', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = 'my-super-awesome-container';
+  const container = uuid.v4();
 
   // check if current container isn't the new one already
   t.not(storage.getActiveContainer(), container);
@@ -72,63 +77,78 @@ test.serial('createContainer - should create container', function * (t) {
   yield storage.deleteContainer(container);
 });
 
+test.serial('createContainer - should create container and set it as active', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  const container = uuid.v4();
+
+  // check if current container isn't the new one already
+  t.not(storage.getActiveContainer(), container);
+
+  yield t.notThrows(storage.createContainer(container, true));
+
+  // createContainer should have set the the new container as active
+  t.is(storage.getActiveContainer(), container);
+
+  // cleanup
+  yield storage.deleteContainer(container);
+});
+
 test.serial('deleteContainer', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = 'my-test-container';
+  const container = uuid.v4();
   yield storage.createContainer(container);
   yield t.notThrows(storage.deleteContainer(container));
 });
 
-test.skip('getContainerList', function * (t) {
+test.serial('getContainerList', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
   const containers = yield storage.getContainerList();
 
-  // TODO: test more
+  // TODO: add more tests
 
   t.true(Array.isArray(containers));
 });
 
-test.skip('listContainer', (t) => {});
+test.serial('listContainer - should list contents of container', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  const container = uuid.v4();
+
+  // should throw when an container does not exist
+  yield t.throws(storage.listContainer(container));
+
+  // create a test container
+  yield storage.createContainer(container, true);
+
+  // should list empty container
+  const items = yield storage.listContainer();
+  t.true(Array.isArray(items));
+  t.true(items.length === 0);
+
+  // should list items when there is any
+  //   .then((contents) => storage.putObject('test.json', mime.lookup('test.json'), contents, {hello: 'world'}))
+  //   // Plain Text file
+  //   .then(() => readFilePromise(path.join(__dirname, 'input', 'test.txt')))
+  //   .then((contents) => storage.putObject('test.txt', mime.lookup('test.txt'), contents))
+  //   // Image
+  //   .then(() => readFilePromise(path.join(__dirname, 'input', 'test.png')))
+  //   .then((contents) => storage.putObject('test.png', mime.lookup('test.png'), contents))
+
+  // cleanup
+  yield storage.deleteContainer(container);
+});
+
 test.skip('putObject', (t) => {});
 test.skip('getObject', (t) => {});
 test.skip('deleteObject', (t) => {});
-//
-//
-//
-// /**
-//  * fs.readFile promise wrapper
-//  */
-// function readFilePromise (file) {
-//   return new Promise(function (resolve, reject) {
-//     fs.readFile(file, function (err, buffer) {
-//       if (err) {
-//         return reject(err);
-//       }
-//
-//       resolve(buffer);
-//     });
-//   });
-// }
-//
-// /**
-//  * fs.writeFile promise wrapper
-//  */
-// function writeFilePromise (filepath, filecontents) {
-//   return new Promise((resolve, reject) => {
-//     fs.writeFile(filepath, filecontents, function (err, written) {
-//       if (err) {
-//         return reject(err);
-//       }
-//
-//       resolve();
-//     });
-//   });
-// }
-//
+
 // // create storage instance
 // const storage = objectStorage(config);
 //
