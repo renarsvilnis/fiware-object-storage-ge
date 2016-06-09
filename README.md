@@ -3,7 +3,7 @@
 > A promise based Node.js module for read/write access to the FIWARE Object Storage GE
 
 ![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
-![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge/dev.svg)
+![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge/dev)
 ![Test coverage](https://img.shields.io/coveralls/renarsvilnis/fiware-object-storage-ge/dev.svg)
 
 
