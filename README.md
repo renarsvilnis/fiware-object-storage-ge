@@ -2,13 +2,16 @@
 
 > A promise based Node.js module for read/write access to the FIWARE Object Storage GE
 
-[![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)](https://nodei.co/npm/<package>/)
+![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
+![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge.svg)
+![Test coverage](https://img.shields.io/coveralls/renarsvilnis/fiware-object-storage-ge.svg)
+
 
 Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidkahl/fiware-object-storage) repository ended up as a ground up rewrite referencing the [FIWARE python example](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Object_Storage_-_User_and_Programmers_Guide#Example_Python).
 
 ## Installation
 
-> Requires `v5.*.*` Node.js
+> Requires either an lts node versions of `v4.*` or `v5.*` or later
 
 ``` bash
 npm install --save fiware-object-storage-ge
@@ -67,23 +70,13 @@ DEBUG=* node server.js
 
 > All methods that return a promise will throw an `Error` instance in the standard promise way.
 
-```javascript
-storage.initiate()
-    .then(() => {
-        // authenticated succesfully
-    })
-    .catch((err) => {
-        console.err(err);
-    });
-```
-
 ### `initiate()`
 Returns `Promise`.
 
 Function that must be used to initiate the storage. The function internally fetches the `tenant` and retrieves the security token which is needed for making the requests for the FIWARE Object Storage API.
 
 ```javascript
-storage.init()
+storage.initiate()
     .then(() => {
         // initiated the instance succesfully
     })
@@ -234,7 +227,7 @@ Upload a file object to a container.
 > Filename can be found by using `path.basename('/path/to/cat-photo.jpg')`
 
 > **Object names are unique to the container, if a object with the name already exists `putObject` will override the object!**
-> 
+>
 > **Object contents must be a Buffer class instance** which can be taken directly from reading a file or by creating a buffer from string [`new Buffer(str[, encoding])`](https://nodejs.org/api/buffer.html#buffer_new_buffer_str_encoding). If trying to upload a object or array or number you need to convert it to a string. Done by `JSON.stringify(<variable>)`.
 
 **Example uploading a image file.**
@@ -340,7 +333,7 @@ storage.getObject('cat-photo.jpg')
         // if needed response may hold an additional metadata object
         // if specified during object upload
         console.log(res.metadata);
-       
+
         // save the object to file
         const filename = path.join(__dirname, 'downloads', 'cat-photo.jpg');
         fs.writeFile(filename, res.value, function (err, written) {
@@ -361,10 +354,10 @@ storage.getObject('people.json')
     .then((res) => new Promise((resolve, reject) => {
         // first convert the buffer to string
         let resObj = res.value.toString('utf-8');
-        
+
         // conver the string to values
         resObj = JSON.parse(resObj);
-        
+
         console.log(resObj);
         // > [{name: 'John', surname: 'Rambo'}, ...]
     }))

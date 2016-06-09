@@ -118,3 +118,5 @@ node_modules
 
 ### Project specific
 tests/out
+.nyc_output
+coverage

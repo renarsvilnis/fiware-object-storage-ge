@@ -10,8 +10,17 @@
     "Object Storage"
   ],
   "scripts": {
-    "test": "DEBUG=fiware-object-storage-ge* node ./tests/index.js",
-    "test:nodemon": "DEBUG=fiware-object-storage-ge* nodemon --ignore 'tests/*.json' ./tests/index.js"
+    "test-old": "DEBUG=fiware-object-storage-ge* node ./tests/index.js",
+    "test-old:nodemon": "DEBUG=fiware-object-storage-ge* nodemon --ignore 'tests/*.json' ./tests/index.js",
+    "lint": "eslint ./lib",
+    "test": "ava --verbose",
+    "cover": "nyc npm run test",
+    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "coverage": "npm run cover && nyc report --reporter=text-lcov | coveralls",
+    "watch:test": "npm run test --watch",
+    "watch:cover": "nodemon --quiet --watch server --watch src --exec npm run cover -s",
+    "precommit": "npm run test && npm run lint",
+    "prepush": "npm run test && npm run lint"
   },
   "author": "Renārs Vilnis <renars.vilnis@gmail.com> (https://renarsvilnis.com/)",
   "maintainers": [
@@ -28,15 +37,42 @@
     "superagent": "^1.6.1"
   },
   "devDependencies": {
+    "ava": "0.15.2",
+    "babel-core": "6.9.1",
+    "babel-eslint": "6.0.4",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-polyfill": "6.9.1",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-react": "6.5.0",
+    "babel-preset-stage-0": "6.5.0",
+    "babel-register": "6.9.0",
+    "coveralls": "2.11.9",
+    "eslint": "2.11.1",
+    "eslint-config-renarsvilnis": "1.6.0",
+    "eslint-config-standard": "5.3.1",
+    "eslint-loader": "1.3.0",
+    "eslint-plugin-babel": "3.2.0",
+    "eslint-plugin-promise": "1.3.2",
+    "eslint-plugin-react": "5.1.1",
+    "eslint-plugin-standard": "1.3.2",
+    "husky": "0.11.4",
     "mime": "1.3.4",
-    "babel-eslint": "5.0.0-beta6",
-    "eslint": "1.10.3",
-    "eslint-config-renarsvilnis": "1.3.1",
-    "eslint-config-semistandard": "5.0.0",
-    "eslint-config-standard": "4.4.0",
-    "eslint-plugin-babel": "3.0.0",
-    "eslint-plugin-react": "3.15.0",
-    "eslint-plugin-standard": "1.3.1",
-    "nodemon": "^1.8.1"
+    "nodemon": "1.9.2",
+    "nyc": "6.4.4"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text-lcov"
+    ]
+  },
+  "ava": {
+    "files": [
+      "./lib/**/*.test.js"
+    ],
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
   }
 }
