@@ -2,7 +2,9 @@
 
 > A promise based Node.js module for read/write access to the FIWARE Object Storage GE
 
-[![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)](https://nodei.co/npm/<package>/)
+![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
+![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge/dev)
+
 
 Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidkahl/fiware-object-storage) repository ended up as a ground up rewrite referencing the [FIWARE python example](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Object_Storage_-_User_and_Programmers_Guide#Example_Python).
 
