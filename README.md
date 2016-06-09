@@ -11,7 +11,7 @@ Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidk
 
 ## Installation
 
-> Requires `v5.*.*` Node.js
+> Requires either an lts node versions of `v4.*` or `v5.*` or later
 
 ``` bash
 npm install --save fiware-object-storage-ge
