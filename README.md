@@ -70,23 +70,13 @@ DEBUG=* node server.js
 
 > All methods that return a promise will throw an `Error` instance in the standard promise way.
 
-```javascript
-storage.initiate()
-    .then(() => {
-        // authenticated succesfully
-    })
-    .catch((err) => {
-        console.err(err);
-    });
-```
-
 ### `initiate()`
 Returns `Promise`.
 
 Function that must be used to initiate the storage. The function internally fetches the `tenant` and retrieves the security token which is needed for making the requests for the FIWARE Object Storage API.
 
 ```javascript
-storage.init()
+storage.initiate()
     .then(() => {
         // initiated the instance succesfully
     })
