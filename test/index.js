@@ -7,7 +7,21 @@ import test from 'ava';
 // const mime = require('mime');
 
 import FiwareStorage from '../index';
-import config from './config.json';
+
+/**
+ * Config build from enviromental variables
+ */
+let config;
+if (process.env.TRAVIS) {
+  config = {
+    container: process.env.FI_CONTAINER,
+    user: process.env.FI_USER,
+    password: process.env.FI_PASSWORD,
+    region: process.env.FI_REGION
+  };
+} else {
+  config = require('./config.json');
+}
 
 test.serial('initiate - should initiate', function * (t) {
   const storage = new FiwareStorage(config);
