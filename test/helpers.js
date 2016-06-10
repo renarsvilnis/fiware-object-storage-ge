@@ -38,6 +38,12 @@ export class TempContainerManager {
      * @type {Object[Array]}
      */
     this.containers = [];
+
+    /**
+     * All test containers are prefixed for human readability
+     * @type {String}
+     */
+    this.prefix = 'AUTOMATED-TEST-CONTAINER';
   }
 
   /**
@@ -45,7 +51,7 @@ export class TempContainerManager {
    * @return {string}
    */
   generateName () {
-    return uuid.v4();
+    return `${this.prefix}-${uuid.v4()}`;
   }
 
   /**
@@ -87,6 +93,15 @@ export class TempContainerManager {
 
     return storage.initiate()
       .then(() => storage.deleteContainer(name, true));
+  }
+
+  /**
+   * Filter out non test containers
+   * @param  {Array} containers
+   * @return {Array}
+   */
+  filterTestContainers (containers) {
+    return containers.filter((container) => container.startsWith(this.prefix));
   }
 
   /**

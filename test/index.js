@@ -31,6 +31,16 @@ const config = !process.env.TRAVIS ? require('./config.json') : {
 // Hooks
 // #############################################################################
 
+test.before('clean wupt', function * (t) {
+  const storage = new FiwareStorage(config);
+  yield storage.initiate();
+
+  let containers = yield storage.getContainerList();
+  containers = tempContainers.filterTestContainers(containers);
+
+  yield containers.map((container) => storage.deleteContainer(container, true));
+});
+
 test.after.always('guaranteed cleanup', function * (t) {
   yield tempContainers.destroyAll();
 });
