@@ -198,7 +198,7 @@ storage.listContainer('new-container')
     });
 ```
 
-### `deleteContainer(containerName, force)`
+### `deleteContainer(containerName, [force])`
 - `containerName` : String
 - `force` : Boolean - Default `false`
 
