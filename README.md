@@ -207,10 +207,10 @@ Returns `Promise`.
 Finds and deletes a container in the config specified region.
 
 > **To delete a container it must be empty** else will recieve an Error.
-> <br>By specifying force the library will fetch and delete all objects in the container and then delete the container.
+> <br/>By specifying force the library will fetch and delete all objects in the container and then delete the container.
 
 > 🔥**USE WITH CAUTION**🔥
-> <br>There is no such transaction on the delete operation. If any error occurs while deleting objects, previously deleted objects can't be restored.
+> <br/>There is no such transaction on the delete operation. If any error occurs while deleting objects, previously deleted objects can't be restored.
 
 
 ```javascript
@@ -396,23 +396,19 @@ storage. deleteObject('cat-picture.jpg', 'new-container')
 ```
 
 ## Testing
-Although there aren't any unit tests written, it is possible to do a system test for testing out the functionality of the module as following:
+
+There are system tests written in [`ava`](https://github.com/avajs/ava) found in the `test` folder.
+
+To run tests you need create a file `test/config.json`, a template can be used form `test/config.json`. Then add your own Fiware account credentials.
+
+> ⚠️ **Tests locally are ran against your own FIWARE account.** To make cure we don't messup your exisitng containers, we create uuid like container names that are all prefixed by `'AUTOMATED-TEST-CONTAINER`, resulting in a exmaple container name such as `AUTOMATED-TEST-CONTAINER-6c84fb90-12c4-11e1-840d-7b25c5ee775a`.
 
 ```bash
-# clone the repo
-cd path/to/clone/in
-git clone https://github.com/renarsvilnis/fiware-object-storage-ge.git
+# run tests
+npm run test
 
-# install the dependencies
-cd fiware-object-storage-ge
-npm install
-
-# Run the test - for it to work you need to supply the test with the below
-# listed config entries
-CONTAINER=<your-container-name> USER=<fiware-account-email> PASSWORD=<fiware-account-password> REGION=<object-storage-region> npm run test
-# when developing it might be usefull to nodemon on top that reruns the tests
-# on file modification
-CONTAINER=... npm run test:nodemon
+# run coverage
+npm run cover
 ```
 
 > Module has support for [debug](https://www.npmjs.com/package/debug) package and can be used then contributing by prefixing the test command:
@@ -432,8 +428,10 @@ These are the things that might need some work on:
 - [ ] Add Additional methods: `objectExists`
 - [ ] Add check if instance is initiated before executing methods. *Can be solved my initiating on creation*
 - [ ] Create more readable errors
-- [ ] Add option to clear force delete container by deleting all its objects in it and then deletes the container itself
 - [ ] Investigate why `listContainer` and `getContainerList` returns text response with the objectnames, instead of a json response with more detailed info as requests that fetch storage container info on `cloud.lab.fiware.org`
+
+> Be sure to follow the code-styling guide provided by the configured eslint
+
 
 ## License
 
