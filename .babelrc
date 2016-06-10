@@ -1,11 +1,7 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "plugins": [
-    ["transform-runtime", {
-      "polyfill": false,
-      "regenerator": true
-    }]
-  ],
-  "ignore": [
+  "presets": ["es2015"],
+  "plugins": [],
+  "only": [
+    "./test/*.js"
   ]
 }
