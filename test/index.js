@@ -188,6 +188,9 @@ test.skip('putObject', function * (t) {
   // // Image
   // .then(() => readFilePromise(path.join(__dirname, 'input', 'test.png')))
   // .then((contents) => storage.putObject('test.png', mime.lookup('test.png'), contents))
+
+  // http://stackoverflow.com/questions/25783161/asserting-files-that-have-the-same-content
+  // TODO: compare file before and after
 });
 test.skip('getObject', (t) => {});
 
