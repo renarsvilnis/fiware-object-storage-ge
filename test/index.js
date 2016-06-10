@@ -1,12 +1,11 @@
 'use strict';
 
 import test from 'ava';
-import uuid from 'node-uuid';
 import path from 'path';
 import mime from 'mime';
 
 import {readFilePromise, TempContainerManager} from './helpers';
-import FiwareStorage from '../index';
+import FiwareStorage from '../lib/index';
 
 // #############################################################################
 // Presetup
@@ -40,7 +39,7 @@ test.after.always('guaranteed cleanup', function * (t) {
 // Tests
 // #############################################################################
 
-test.serial('initiate - should initiate', function * (t) {
+test('initiate - should initiate', function * (t) {
   const storage = new FiwareStorage(config);
 
   yield t.notThrows(storage.initiate());
@@ -72,7 +71,7 @@ test.skip('lookupTenant', (t) => {
   // lookupTenant
 });
 
-test.serial('createContainer - should create container', function * (t) {
+test('createContainer - should create container', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
@@ -91,11 +90,11 @@ test.serial('createContainer - should create container', function * (t) {
   t.true(containers.indexOf(container) > -1);
 });
 
-test.serial('createContainer - should create container and set it as active', function * (t) {
+test('createContainer - should create container and set it as active', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = uuid.v4();
+  const container = tempContainers.create(config);
 
   // check if current container isn't the new one already
   t.not(storage.getActiveContainer(), container);
@@ -104,21 +103,18 @@ test.serial('createContainer - should create container and set it as active', fu
 
   // createContainer should have set the the new container as active
   t.is(storage.getActiveContainer(), container);
-
-  // cleanup
-  yield storage.deleteContainer(container);
 });
 
-test.serial('deleteContainer - should delete container', function * (t) {
+test('deleteContainer - should delete container', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = uuid.v4();
+  const container = tempContainers.create(config);
   yield storage.createContainer(container);
   yield t.notThrows(storage.deleteContainer(container));
 });
 
-test.serial('getContainerList', function * (t) {
+test('getContainerList', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
@@ -133,11 +129,11 @@ test.skip('deleteContainer - should force delete a container', function * (t) {
 
 });
 
-test.serial('listContainer - should list contents of container', function * (t) {
+test('listContainer - should list contents of container', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = tempContainers.generateName();
+  const container = tempContainers.create(config);
 
   // should throw when an container does not exist
   yield t.throws(storage.listContainer(container));
@@ -157,16 +153,13 @@ test.serial('listContainer - should list contents of container', function * (t) 
   t.true(Array.isArray(items));
   t.true(items.length === 1);
   t.is(items[0], 'test.txt');
-
-  // cleanup
-  yield storage.deleteContainer(container, true);
 });
 
 test.skip('putObject', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = uuid.v4();
+  const container = tempContainers.create(config);
 
   // create a test container
   yield storage.createContainer(container, true);
@@ -185,17 +178,14 @@ test.skip('putObject', function * (t) {
   // // Image
   // .then(() => readFilePromise(path.join(__dirname, 'input', 'test.png')))
   // .then((contents) => storage.putObject('test.png', mime.lookup('test.png'), contents))
-
-  // cleanup
-  yield storage.deleteContainer(container, true);
 });
 test.skip('getObject', (t) => {});
 
-test.skip('deleteObject - should delete objects', function * (t) {
+test('deleteObject - should delete objects', function * (t) {
   const storage = new FiwareStorage(config);
   yield storage.initiate();
 
-  const container = uuid.v4();
+  const container = tempContainers.create(config);
 
   // create a test container
   yield storage.createContainer(container, true);

@@ -198,12 +198,20 @@ storage.listContainer('new-container')
     });
 ```
 
-### `deleteContainer(containerName)`
+### `deleteContainer(containerName, force)`
 - `containerName` : String
+- `force` : Boolean - Default `false`
 
 Returns `Promise`.
 
 Finds and deletes a container in the config specified region.
+
+> **To delete a container it must be empty** else will recieve an Error.
+> <br>By specifying force the library will fetch and delete all objects in the container and then delete the container.
+
+> **USE WITH CAUTION**
+> <br>There is no such transaction on the delete operation. If any error occurs while deleting objects, previously deleted objects can't be restored.
+
 
 ```javascript
 storage.deleteContainer('new-container')
@@ -376,8 +384,6 @@ storage.getObject('people.json')
 Returns `Promise`.
 
 Deletes a object from the specified or instance active container.
-
-> **To delete a container it must be empty** else will recieve an Error.
 
 ```javascript
 storage. deleteObject('cat-picture.jpg', 'new-container')

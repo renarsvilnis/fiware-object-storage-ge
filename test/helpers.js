@@ -5,7 +5,7 @@ import uuid from 'node-uuid';
 // const path = require('path');
 // const mime = require('mime');
 
-import FiwareStorage from '../index';
+import FiwareStorage from '../lib/index';
 
 /**
  * [readFilePromise description]
