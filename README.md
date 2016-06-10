@@ -2,15 +2,19 @@
 
 > A promise based Node.js module for read/write access to the FIWARE Object Storage GE
 
+Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidkahl/fiware-object-storage) repository ended up as a ground up rewrite referencing the [FIWARE python example](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Object_Storage_-_User_and_Programmers_Guide#Example_Python).
+
+## Status
+
 ![NPM](https://nodei.co/npm/fiware-object-storage-ge.png?downloads=true)
 ![Build status](https://img.shields.io/travis/renarsvilnis/fiware-object-storage-ge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/renarsvilnis/fiware-object-storage-ge/badge.svg?branch=master)](https://coveralls.io/github/renarsvilnis/fiware-object-storage-ge?branch=master)
 
-Started as a fork of [arvidkahl/fiware-object-storage](https://github.com/arvidkahl/fiware-object-storage) repository ended up as a ground up rewrite referencing the [FIWARE python example](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Object_Storage_-_User_and_Programmers_Guide#Example_Python).
+## Requirements
+
+> Requires either an lts node versions of `v4.*` or `v6.*` or later
 
 ## Installation
-
-> Requires either an lts node versions of `v4.*` or `v5.*` or later
 
 ``` bash
 npm install --save fiware-object-storage-ge
@@ -194,12 +198,20 @@ storage.listContainer('new-container')
     });
 ```
 
-### `deleteContainer(containerName)`
+### `deleteContainer(containerName, force)`
 - `containerName` : String
+- `force` : Boolean - Default `false`
 
 Returns `Promise`.
 
 Finds and deletes a container in the config specified region.
+
+> **To delete a container it must be empty** else will recieve an Error.
+> <br/>By specifying force the library will fetch and delete all objects in the container and then delete the container.
+
+> 🔥**USE WITH CAUTION**🔥
+> <br/>There is no such transaction on the delete operation. If any error occurs while deleting objects, previously deleted objects can't be restored.
+
 
 ```javascript
 storage.deleteContainer('new-container')
@@ -373,8 +385,6 @@ Returns `Promise`.
 
 Deletes a object from the specified or instance active container.
 
-> **To delete a container it must be empty** else will recieve an Error.
-
 ```javascript
 storage. deleteObject('cat-picture.jpg', 'new-container')
     .then(() => {
@@ -386,24 +396,26 @@ storage. deleteObject('cat-picture.jpg', 'new-container')
 ```
 
 ## Testing
-Although there aren't any unit tests written, it is possible to do a system test for testing out the functionality of the module as following:
+
+There are system tests written in [`ava`](https://github.com/avajs/ava) found in the `test` folder.
+
+To run tests you need create a file `test/config.json`, a template can be used form `test/config.json`. Then add your own Fiware account credentials.
+
+> ⚠️ **Tests locally are ran against your own FIWARE account.** To make cure we don't messup your exisitng containers, we create uuid like container names that are all prefixed by `'AUTOMATED-TEST-CONTAINER`, resulting in a exmaple container name such as `AUTOMATED-TEST-CONTAINER-6c84fb90-12c4-11e1-840d-7b25c5ee775a`.
 
 ```bash
-# clone the repo
-cd path/to/clone/in
-git clone https://github.com/renarsvilnis/fiware-object-storage-ge.git
+# run tests
+npm run test
 
-# install the dependencies
-cd fiware-object-storage-ge
-npm install
-
-# Run the test - for it to work you need to supply the test with the below
-# listed config entries
-CONTAINER=<your-container-name> USER=<fiware-account-email> PASSWORD=<fiware-account-password> REGION=<object-storage-region> npm run test
-# when developing it might be usefull to nodemon on top that reruns the tests
-# on file modification
-CONTAINER=... npm run test:nodemon
+# run coverage
+npm run cover
 ```
+
+> Module has support for [debug](https://www.npmjs.com/package/debug) package and can be used then contributing by prefixing the test command:
+>
+> `DEBUG=fiware-object-storage-ge* npm run test`
+>
+> Can be helpful to see what happens under the hood
 
 ## Contributing
 
@@ -411,15 +423,15 @@ Feel free to fork or add issues/pull-requests if something changes in the API sc
 
 These are the things that might need some work on:
 
-- [x] Add missing documenatation
+- [ ] Throw errors for missing config params
 - [ ] Automatic token reauthentification
-- [ ] Add `initiateSync` method, either with [`deasync`](https://github.com/abbr/deasync) or [`sync`](https://www.npmjs.com/package/sync) or [`node-sync`](https://github.com/ybogdanov/node-sync).
-- [x] `config.tenant` implementation
-- [ ] Write tests (*Input tests files are under tests/input*)
-- [ ] Add check if instance is initiated before executing methods
+- [ ] Add Additional methods: `objectExists`
+- [ ] Add check if instance is initiated before executing methods. *Can be solved my initiating on creation*
 - [ ] Create more readable errors
-- [ ] Add option to clear force delete container, deletes all objects in it and then deletes the container itself
 - [ ] Investigate why `listContainer` and `getContainerList` returns text response with the objectnames, instead of a json response with more detailed info as requests that fetch storage container info on `cloud.lab.fiware.org`
+
+> Be sure to follow the code-styling guide provided by the configured eslint
+
 
 ## License
 
