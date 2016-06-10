@@ -82,6 +82,10 @@ export class TempContainerManager {
     return this.containers;
   }
 
+  isTestContainer (name) {
+    return name.startsWith(this.prefix);
+  }
+
   /**
    * Destroy given container
    * @param  {string} {name
@@ -90,6 +94,10 @@ export class TempContainerManager {
    */
   destroy ({name, config}) {
     const storage = new FiwareStorage(config);
+
+    if (!this.isTestContainer(name)) {
+      throw new Error('Trying to delete a non test container, that is prohibited');
+    }
 
     return storage.initiate()
       .then(() => storage.deleteContainer(name, true));
@@ -101,7 +109,7 @@ export class TempContainerManager {
    * @return {Array}
    */
   filterTestContainers (containers) {
-    return containers.filter((container) => container.startsWith(this.prefix));
+    return containers.filter((n) => this.isTestContainer(n));
   }
 
   /**
